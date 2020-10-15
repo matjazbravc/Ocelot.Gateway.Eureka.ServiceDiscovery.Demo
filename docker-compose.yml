@@ -1,0 +1,57 @@
+version: '3.6'
+
+services:
+    eureka-server:
+        container_name: eureka-server
+        image: steeltoeoss/eurekaserver:latest
+        restart: on-failure
+        hostname: eureka-server
+        networks:
+            - backend_network
+
+    servicea.openapi:
+        container_name: servicea.openapi
+        image: servicea.openapi:latest
+        restart: on-failure
+        hostname: servicea.openapi
+        build:
+            context: .
+            dockerfile: src/ServiceA.OpenApi/Dockerfile
+        networks:
+            - backend_network
+
+    serviceb.openapi:
+        container_name: serviceb.openapi
+        image: serviceb.openapi:latest
+        restart: on-failure
+        hostname: serviceb.openapi
+        build:
+            context: .
+            dockerfile: src/ServiceB.OpenApi/Dockerfile
+        networks:
+            - backend_network
+
+    servicec.openapi:
+        container_name: servicec.openapi
+        image: servicec.openapi:latest
+        restart: on-failure
+        hostname: servicec.openapi
+        build:
+            context: .
+            dockerfile: src/ServiceC.OpenApi/Dockerfile
+        networks:
+            - backend_network
+
+    services.gateway:
+        container_name: services.gateway
+        image: services.gateway:latest
+        restart: on-failure
+        hostname: services.gateway
+        build:
+            context: .
+            dockerfile: src/Services.Gateway/Dockerfile
+        networks:
+            - backend_network
+
+networks:
+    backend_network:

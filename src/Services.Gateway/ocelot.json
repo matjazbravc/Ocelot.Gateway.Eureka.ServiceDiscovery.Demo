@@ -1,0 +1,27 @@
+{
+  "Routes": [
+    {
+      "ServiceName": "SERVICE.OPENAPI",
+      "DownstreamPathTemplate": "/{everything}",
+      "UpstreamPathTemplate": "/{everything}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "FileCacheOptions": {
+        "TtlSeconds": 15
+      },
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      }
+    }
+  ],
+  "GlobalConfiguration": {
+    "RequestIdKey": "OcRequestId",
+    "DownstreamScheme": "http",
+    "ReRoutesCaseSensitive": false,
+    "UseServiceDiscovery": true,
+    "ServiceDiscoveryProvider": {
+      "Host": "services.gateway",
+      "Port": 8761,
+      "Type": "Eureka"
+    }
+  }
+}

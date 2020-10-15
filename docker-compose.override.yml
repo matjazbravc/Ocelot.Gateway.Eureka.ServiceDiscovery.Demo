@@ -1,0 +1,63 @@
+version: '3.6'
+
+services:
+    eureka-server:
+        environment:
+            - EUREKA_SERVER_ENABLE_SELF_PRESERVATION=false
+        ports:
+            - 8761:8761
+
+    servicea.openapi:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:80
+            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+        ports:
+            - 9100:80
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+        depends_on:
+            - eureka-server
+
+    serviceb.openapi:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:80
+            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+        ports:
+            - 9200:80
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+        depends_on:
+            - eureka-server
+
+    servicec.openapi:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:80
+            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+        ports:
+            - 9300:80
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+        depends_on:
+            - eureka-server
+
+    services.gateway:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=http://+:80
+            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+        ports:
+            - 9500:80
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+        depends_on:
+            - eureka-server
+            - servicea.openapi
+            - serviceb.openapi
+            - servicec.openapi
