@@ -1,0 +1,56 @@
+services:
+    eureka-server:
+        container_name: eureka-server
+        image: steeltoeoss/eurekaserver:latest
+        restart: on-failure
+        hostname: eureka-server
+        networks:
+            - common_network
+
+    servicea.openapi:
+        container_name: servicea.openapi
+        image: servicea.openapi:latest
+        restart: on-failure
+        hostname: servicea.openapi
+        build:
+            context: .
+            dockerfile: src/ServiceA.OpenApi/Dockerfile
+        networks:
+            - common_network
+
+    serviceb.openapi:
+        container_name: serviceb.openapi
+        image: serviceb.openapi:latest
+        restart: on-failure
+        hostname: serviceb.openapi
+        build:
+            context: .
+            dockerfile: src/ServiceB.OpenApi/Dockerfile
+        networks:
+            - common_network
+
+    servicec.openapi:
+        container_name: servicec.openapi
+        image: servicec.openapi:latest
+        restart: on-failure
+        hostname: servicec.openapi
+        build:
+            context: .
+            dockerfile: src/ServiceC.OpenApi/Dockerfile
+        networks:
+            - common_network
+
+    services.gateway:
+        container_name: services.gateway
+        image: services.gateway:latest
+        restart: on-failure
+        hostname: services.gateway
+        build:
+            context: .
+            dockerfile: src/Services.Gateway/Dockerfile
+        networks:
+            - common_network
+
+networks:
+    common_network:
+        driver: bridge
