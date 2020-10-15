@@ -1,7 +1,7 @@
 ![](res/Title.jpg)
 # Building API Gateway with load balancer and service discovery
 
-In my [previus demo](https://github.com/matjazbravc/Microservice.Architecture.Demo) I showed how to implement microservice architecture using ASP.NET Core. This demo expands the microservice architecture with gateway load balancer ([Ocelot](https://github.com/ThreeMammals/Ocelot)) and service discovery ([Eureka](https://spring.io/projects/spring-cloud-netflix)).
+In my [previous demo](https://github.com/matjazbravc/Microservice.Architecture.Demo) I showed how to implement microservice architecture using ASP.NET Core. This demo expands the microservice architecture with gateway load balancer ([Ocelot](https://github.com/ThreeMammals/Ocelot)) and service discovery ([Eureka](https://spring.io/projects/spring-cloud-netflix)).
 
 ## Load balancing
 Load balancing improves the distribution of workloads across multiple computing resources. Load balancing aims to optimize resource use, maximize throughput, minimize response time, and avoid overload of any single resource. [Ocelot](https://github.com/ThreeMammals/Ocelot) can load balance across available downstream services for each Route. This means you can scale your downstream services and [Ocelot](https://github.com/ThreeMammals/Ocelot) can use them effectively. The type of load balancer available are:
