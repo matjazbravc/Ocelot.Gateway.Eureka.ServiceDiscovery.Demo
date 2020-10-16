@@ -172,6 +172,21 @@ After this step client is able to get information about this service by querying
   "AllowedHosts": "*"
 }
 ```
+# Running locally
+You can easily test and debug solution locally. You have to ...
+
+1. Set all project in solution to start project launch settings like this
+![](res/RunLocal1.jpg)
+
+2. Select multiple startup projects:
+![](res/RunLocal2.jpg)
+
+3. Open command prompt and start Eureka server in Docker with  
+**Docker run -p 8761:8761 steeltoeoss/eureka-server**
+
+4. Run multiple projects from Visual studio
+
+# Running in Docker
 
 ## Docker-Compose Files
 **Docker-compose.yml** file with setup for all the containers looks like this:
@@ -302,11 +317,9 @@ services:
             - servicec.openapi
 
 ```
-
-## Setup the Containers
+# Setup the Containers
 To execute compose file, open Powershell, and navigate to the compose file in the root folder. Then execute the following command: **docker-compose up -d**. The -d parameter executes the command detached. This means that the containers run in the background and don’t block your Powershell window. To check all running Containers use **docker ps**.
 
-## Runnig in Docker
 ![](res/Docker.jpg)
 
 ## Check it out
