@@ -181,8 +181,9 @@ You can easily test and debug solution locally. You have to ...
 2. Select multiple startup projects:
 ![](res/RunLocal2.jpg)
 
-3. Open command prompt and start Eureka server in Docker with  
-**Docker run -p 8761:8761 steeltoeoss/eureka-server**
+3. Spin up Eureka in Docker with:  
+**docker run -p 8761:8761 steeltoeoss/eureka-server**  
+and wait a minute or 2 to start up ...
 
 4. Run multiple projects from Visual studio
 
