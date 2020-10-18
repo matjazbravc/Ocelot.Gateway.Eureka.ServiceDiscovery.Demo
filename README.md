@@ -172,7 +172,7 @@ After this step client is able to get information about this service by querying
   "AllowedHosts": "*"
 }
 ```
-# Running locally
+# Steps To Run the Solution locally
 You can easily test and debug solution locally. You have to ...
 
 1. Set all project in solution to start project launch settings like this
