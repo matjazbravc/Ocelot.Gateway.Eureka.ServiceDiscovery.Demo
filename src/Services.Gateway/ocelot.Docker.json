@@ -1,0 +1,13 @@
+{
+  "GlobalConfiguration": {
+    "RequestIdKey": "OcRequestId",
+    "DownstreamScheme": "http",
+    "ReRoutesCaseSensitive": false,
+    "UseServiceDiscovery": true,
+    "ServiceDiscoveryProvider": {
+      "Host": "services.gateway",
+      "Port": 8761,
+      "Type": "Eureka"
+    }
+  }
+}

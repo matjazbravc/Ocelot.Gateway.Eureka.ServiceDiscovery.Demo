@@ -13,4 +13,10 @@
     <PackageReference Include="Ocelot.Provider.Polly" Version="16.0.1" />
     <PackageReference Include="Steeltoe.Discovery.ClientCore" Version="2.5.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="ocelot - Copy.Docker.json">
+      <DependentUpon>ocelot.Docker.json</DependentUpon>
+    </Content>
+  </ItemGroup>
 </Project>

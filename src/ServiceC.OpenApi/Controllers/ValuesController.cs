@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Reflection;
 
 namespace ServiceC.OpenApi.Controllers
 {
@@ -6,23 +9,44 @@ namespace ServiceC.OpenApi.Controllers
     [Route("api/[controller]")]
     public class ValuesController : ControllerBase
     {
-        // GET api/values
-        [HttpGet]
-        public string Get()
+        private readonly string _service_name;
+        private readonly ILogger<ValuesController> _logger;
+
+        public ValuesController(ILogger<ValuesController> logger)
         {
-            return $"Service-C -> 'C' Value";
+            _service_name = Assembly.GetExecutingAssembly().GetName().Name;
+            _logger = logger;
         }
 
-        [HttpGet("status")]
-        public string Status()
+        [HttpGet("badcode")]
+        public string BadCode()
         {
-            return $"Service-C, running on {Request.Host}";
+            var msg = $"{_service_name} -> Some bad code was executed!";
+            throw new Exception(msg);
+        }
+
+        [HttpGet]
+        public IActionResult Get()
+        {
+            var msg = $"{_service_name} -> Value";
+            _logger.LogInformation(msg);
+            return Ok(msg);
         }
 
         [HttpGet("healthcheck")]
         public IActionResult Healthcheck()
         {
-            return Ok("Service-C is healthy");
+            var msg = $"{_service_name} is healthy";
+            _logger.LogInformation(msg);
+            return Ok(msg);
+        }
+
+        [HttpGet("status")]
+        public IActionResult Status()
+        {
+            var msg = $"{_service_name}, running on {Request.Host}";
+            _logger.LogInformation(msg);
+            return Ok(msg);
         }
     }
 }
