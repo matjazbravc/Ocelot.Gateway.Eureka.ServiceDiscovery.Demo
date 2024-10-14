@@ -255,59 +255,45 @@ services:
 
     servicea.openapi:
         environment:
-            - ASPNETCORE_ENVIRONMENT=Development
-            - ASPNETCORE_URLS=http://+:80
-            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+            - ASPNETCORE_ENVIRONMENT=Docker
+            - ASPNETCORE_URLS=http://+:8080
+            - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
         ports:
-            - 9100:80
-        volumes:
-            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+            - 9100:8080
         depends_on:
             - eureka-server
 
     serviceb.openapi:
         environment:
-            - ASPNETCORE_ENVIRONMENT=Development
-            - ASPNETCORE_URLS=http://+:80
-            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+            - ASPNETCORE_ENVIRONMENT=Docker
+            - ASPNETCORE_URLS=http://+:8080
+            - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
         ports:
-            - 9200:80
-        volumes:
-            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+            - 9200:8080
         depends_on:
             - eureka-server
 
     servicec.openapi:
         environment:
-            - ASPNETCORE_ENVIRONMENT=Development
-            - ASPNETCORE_URLS=http://+:80
-            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+            - ASPNETCORE_ENVIRONMENT=Docker
+            - ASPNETCORE_URLS=http://+:8080
+            - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
         ports:
-            - 9300:80
-        volumes:
-            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+            - 9300:8080
         depends_on:
             - eureka-server
 
     services.gateway:
         environment:
-            - ASPNETCORE_ENVIRONMENT=Development
-            - ASPNETCORE_URLS=http://+:80
-            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+            - ASPNETCORE_ENVIRONMENT=Docker
+            - ASPNETCORE_URLS=http://+:8080
+            - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
         ports:
-            - 9500:80
-        volumes:
-            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+            - 9500:8080
         depends_on:
-            - eureka-server
             - servicea.openapi
             - serviceb.openapi
             - servicec.openapi
-
 ```
 # Setup the Containers
 To execute compose file, open Powershell, and navigate to the compose file in the root folder. Then execute the following command: **docker-compose up -d --build --remove-orphans**. The -d parameter executes the command detached. This means that the containers run in the background and don’t block your Powershell window. To check all running Containers use **docker ps**.
