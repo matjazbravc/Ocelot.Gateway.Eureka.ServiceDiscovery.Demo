@@ -1,7 +1,7 @@
 {
   "GlobalConfiguration": {
     "ServiceDiscoveryProvider": {
-      "Host": "services.gateway",
+      "Host": "localhost",
       "Port": 8761,
       "Type": "Eureka"
     }

@@ -25,7 +25,7 @@ public static class Program
           .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
           .AddEnvironmentVariables()
           .AddJsonFile("ocelot.json", optional: false)
-          .AddJsonFile($"ocelot.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true);
+          .AddJsonFile($"ocelot.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: false);
       })
       .ConfigureLogging((builderContext, logging) =>
       {

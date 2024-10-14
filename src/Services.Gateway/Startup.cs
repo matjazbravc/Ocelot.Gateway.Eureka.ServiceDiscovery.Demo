@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
@@ -20,7 +19,6 @@ public class Startup(IConfiguration configuration)
 
   public static void ConfigureServices(IServiceCollection services)
   {
-    services.AddCors();
     services.AddOcelot()
       .AddEureka() // https://ocelot.readthedocs.io/en/latest/features/servicediscovery.html#eureka
       .AddPolly()
@@ -32,17 +30,6 @@ public class Startup(IConfiguration configuration)
 
   public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
   {
-    if (env.IsDevelopment())
-    {
-      app.UseDeveloperExceptionPage();
-    }
-
-    app.UseCors(b => b
-      .AllowAnyOrigin()
-      .AllowAnyMethod()
-      .AllowAnyHeader()
-    );
-
     app.UseRouting();
     app.UseEndpoints(endpoints =>
     {
