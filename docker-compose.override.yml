@@ -1,5 +1,3 @@
-version: '3.6'
-
 services:
     eureka-server:
         environment:
@@ -10,54 +8,41 @@ services:
     servicea.openapi:
         environment:
             - ASPNETCORE_ENVIRONMENT=Docker
-            - ASPNETCORE_URLS=http://+:80
-            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+            - ASPNETCORE_URLS=http://+:8080
+            - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
         ports:
-            - 9100:80
-        volumes:
-            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+            - 9100:8080
         depends_on:
             - eureka-server
 
     serviceb.openapi:
         environment:
             - ASPNETCORE_ENVIRONMENT=Docker
-            - ASPNETCORE_URLS=http://+:80
-            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+            - ASPNETCORE_URLS=http://+:8080
+            - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
         ports:
-            - 9200:80
-        volumes:
-            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+            - 9200:8080
         depends_on:
             - eureka-server
 
     servicec.openapi:
         environment:
             - ASPNETCORE_ENVIRONMENT=Docker
-            - ASPNETCORE_URLS=http://+:80
-            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+            - ASPNETCORE_URLS=http://+:8080
+            - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
         ports:
-            - 9300:80
-        volumes:
-            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+            - 9300:8080
         depends_on:
             - eureka-server
 
     services.gateway:
         environment:
             - ASPNETCORE_ENVIRONMENT=Docker
-            - ASPNETCORE_URLS=http://+:80
-            - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+            - ASPNETCORE_URLS=http://+:8080
+            - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
         ports:
-            - 9500:80
-        volumes:
-            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+            - 9500:8080
         depends_on:
-            - eureka-server
             - servicea.openapi
             - serviceb.openapi
             - servicec.openapi

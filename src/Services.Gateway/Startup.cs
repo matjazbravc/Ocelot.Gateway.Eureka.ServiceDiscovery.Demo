@@ -9,60 +9,53 @@ using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Eureka;
 using Ocelot.Provider.Polly;
-using Steeltoe.Discovery.Client;
 
-namespace Services.Gateway
+namespace Services.Gateway;
+
+public class Startup(IConfiguration configuration)
 {
-    public class Startup
+  private const string SERVICE_NAME = "Services.Gateway";
+
+  public IConfiguration Configuration { get; } = configuration;
+
+  public static void ConfigureServices(IServiceCollection services)
+  {
+    services.AddCors();
+    services.AddOcelot()
+      .AddEureka() // https://ocelot.readthedocs.io/en/latest/features/servicediscovery.html#eureka
+      .AddPolly()
+      .AddCacheManager(x =>
+      {
+        x.WithDictionaryHandle();
+      });
+  }
+
+  public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+  {
+    if (env.IsDevelopment())
     {
-        private const string SERVICE_NAME = "Services.Gateway";
-
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddCors();
-            services.AddOcelot()
-                .AddEureka()
-                .AddPolly()
-                .AddCacheManager(x =>
-                {
-                    x.WithDictionaryHandle();
-                });
-            services.AddDiscoveryClient(Configuration);
-        }
-
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            app.UseCors(b => b
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-            );
-            app.UseRouting();
-            app.UseStaticFiles();
-            app.UseDiscoveryClient();
-            app.UseEndpoints(config =>
-            {
-                config.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync(SERVICE_NAME);
-                });
-                config.MapGet("/info", async context =>
-                {
-                    await context.Response.WriteAsync($"{SERVICE_NAME}, running on {context.Request.Host}");
-                });
-            });
-            app.UseOcelot().Wait();
-        }
+      app.UseDeveloperExceptionPage();
     }
+
+    app.UseCors(b => b
+      .AllowAnyOrigin()
+      .AllowAnyMethod()
+      .AllowAnyHeader()
+    );
+
+    app.UseRouting();
+    app.UseEndpoints(endpoints =>
+    {
+      endpoints.MapGet("/", async context =>
+      {
+        await context.Response.WriteAsync(SERVICE_NAME);
+      });
+      endpoints.MapGet("/info", async context =>
+      {
+        await context.Response.WriteAsync($"{SERVICE_NAME}, running on {context.Request.Host}");
+      });
+    });
+
+    app.UseOcelot().GetAwaiter().GetResult();
+  }
 }

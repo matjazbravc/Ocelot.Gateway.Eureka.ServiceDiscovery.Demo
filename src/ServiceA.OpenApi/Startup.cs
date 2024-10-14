@@ -5,50 +5,51 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Steeltoe.Discovery.Client;
+using Steeltoe.Discovery.Eureka;
 
-namespace ServiceA.OpenApi
+namespace ServiceA.OpenApi;
+
+public class Startup(IConfiguration configuration)
 {
-    public class Startup
+  private const string SERVICE_NAME = "ServiceA.OpenApi";
+
+  public IConfiguration Configuration { get; } = configuration;
+
+  public static void ConfigureServices(IServiceCollection services)
+  {
+    services.AddServiceDiscovery(options => options.UseEureka());
+    services.AddHttpContextAccessor();
+    services.AddControllers();
+    services.AddCors();
+    services.AddRouting(options => options.LowercaseUrls = true);
+  }
+
+  public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+  {
+    if (env.IsDevelopment())
     {
-        private const string SERVICE_NAME = "ServiceA.OpenApi";
-
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
-
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddDiscoveryClient(Configuration);
-            services.AddControllers();
-            services.AddCors();
-            services.AddRouting(options => options.LowercaseUrls = true);
-        }
-
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            app.UseRouting();
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseHsts();
-            }
-            app.UseRouting();
-            app.UseStaticFiles();
-            app.UseDiscoveryClient();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync(SERVICE_NAME);
-                });
-            });
-        }
+      app.UseDeveloperExceptionPage();
     }
+    else
+    {
+      app.UseHsts();
+    }
+
+    app.UseCors(b => b
+      .AllowAnyOrigin()
+      .AllowAnyMethod()
+      .AllowAnyHeader()
+    );
+
+    app.UseRouting();
+
+    app.UseEndpoints(endpoints =>
+    {
+      endpoints.MapControllers();
+      endpoints.MapGet("/", async context =>
+      {
+        await context.Response.WriteAsync(SERVICE_NAME);
+      });
+    });
+  }
 }

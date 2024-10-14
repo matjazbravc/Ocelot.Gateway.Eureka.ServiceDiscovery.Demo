@@ -1,8 +1,26 @@
 {
+  "Routes": [
+    {
+      "ServiceName": "SERVICE.OPENAPI",
+      "DownstreamPathTemplate": "/{url}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "host.docker.internal",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/{url}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "UseServiceDiscovery": true,
+      "RouteIsCaseSensitive": false,
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      }
+    }
+  ],
   "GlobalConfiguration": {
     "RequestIdKey": "OcRequestId",
-    "DownstreamScheme": "http",
-    "ReRoutesCaseSensitive": false,
     "UseServiceDiscovery": true,
     "ServiceDiscoveryProvider": {
       "Host": "services.gateway",

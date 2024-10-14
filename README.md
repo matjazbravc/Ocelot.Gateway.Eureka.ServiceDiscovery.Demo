@@ -65,7 +65,7 @@ The following configuration shows how to set up multiple downstream services for
 
 First, each service instance registers itself to the service discovery service by providing its name and address.
 
-<u>**NOTE: ALL SERVICES HAVE THE SAME REGISTRY NAME "SERVICE.OPENAPI**"</u>
+<u>**NOTE: ALL SERVICES MUST HAVE THE SAME REGISTRY NAME "SERVICE.OPENAPI**"</u>
 
 After this step client is able to get information about this service by querying the service discovery.
 
@@ -86,9 +86,7 @@ After this step client is able to get information about this service by querying
   },
   "Eureka": {
     "Client": {
-      "ServiceUrl": {
-        "DefaultZone": "http://localhost:8761/eureka/"
-      },
+      "ServiceUrl": "http://localhost:8761/eureka/",
       "ValidateCertificates": false,
       "ShouldRegisterWithEureka": true
     },
@@ -120,9 +118,7 @@ After this step client is able to get information about this service by querying
   },
   "Eureka": {
     "Client": {
-      "ServiceUrl": {
-        "DefaultZone": "http://localhost:8761/eureka/"
-      },
+      "ServiceUrl": "http://localhost:8761/eureka/",
       "ValidateCertificates": false,
       "ShouldRegisterWithEureka": true
     },
@@ -155,9 +151,7 @@ After this step client is able to get information about this service by querying
   },
   "Eureka": {
     "Client": {
-      "ServiceUrl": {
-        "DefaultZone": "http://localhost:8761/eureka/"
-      },
+      "ServiceUrl": "http://localhost:8761/eureka/",
       "ValidateCertificates": false,
       "ShouldRegisterWithEureka": true
     },
@@ -183,7 +177,7 @@ You can easily test and debug solution locally. You have to ...
 
 3. Spin up Eureka in Docker with:  
 **docker run -p 8761:8761 steeltoeoss/eureka-server**  
-and wait a minute or 2 to start up ...
+and wait a minute to start up ...
 
 4. Run multiple projects from Visual studio
 
@@ -192,8 +186,6 @@ and wait a minute or 2 to start up ...
 ## Docker-Compose Files
 **Docker-compose.yml** file with setup for all the containers looks like this:
 ```yml
-version: '3.6'
-
 services:
     eureka-server:
         container_name: eureka-server
@@ -201,7 +193,7 @@ services:
         restart: on-failure
         hostname: eureka-server
         networks:
-            - backend_network
+            - common_network
 
     servicea.openapi:
         container_name: servicea.openapi
@@ -212,7 +204,7 @@ services:
             context: .
             dockerfile: src/ServiceA.OpenApi/Dockerfile
         networks:
-            - backend_network
+            - common_network
 
     serviceb.openapi:
         container_name: serviceb.openapi
@@ -223,7 +215,7 @@ services:
             context: .
             dockerfile: src/ServiceB.OpenApi/Dockerfile
         networks:
-            - backend_network
+            - common_network
 
     servicec.openapi:
         container_name: servicec.openapi
@@ -234,7 +226,7 @@ services:
             context: .
             dockerfile: src/ServiceC.OpenApi/Dockerfile
         networks:
-            - backend_network
+            - common_network
 
     services.gateway:
         container_name: services.gateway
@@ -245,16 +237,15 @@ services:
             context: .
             dockerfile: src/Services.Gateway/Dockerfile
         networks:
-            - backend_network
+            - common_network
 
 networks:
-    backend_network:
+    common_network:
+        driver: bridge
 
 ```
 and **Docker-compose.override.yml** file:
 ```yml
-version: '3.6'
-
 services:
     eureka-server:
         environment:
@@ -319,12 +310,12 @@ services:
 
 ```
 # Setup the Containers
-To execute compose file, open Powershell, and navigate to the compose file in the root folder. Then execute the following command: **docker-compose up -d**. The -d parameter executes the command detached. This means that the containers run in the background and don’t block your Powershell window. To check all running Containers use **docker ps**.
+To execute compose file, open Powershell, and navigate to the compose file in the root folder. Then execute the following command: **docker-compose up -d --build --remove-orphans**. The -d parameter executes the command detached. This means that the containers run in the background and don’t block your Powershell window. To check all running Containers use **docker ps**.
 
 ![](res/Docker.jpg)
 
 ## Check it out
-Let’s make a first call through API Gateway **http://localhost:9500/api/values**. As we can see, we got response from **Service-A**
+Let’s make a first call through **[API Gateway](http://localhost:9500/api/values)**. As we can see, we got response from **Service-A**
 ![](res/Gateway1.jpg)
 With another request we got response from **Service-C**
 ![](res/Gateway2.jpg)
@@ -336,15 +327,14 @@ And so on...
 [Ocelot](https://github.com/ThreeMammals/Ocelot) successfuly comunicates with [Eureka](https://spring.io/projects/spring-cloud-netflix) service registry and retrives service registrations, load balancer loops through available services and sends requests. It works! Enjoy!
 
 ## Prerequisites
-- [Visual Studio](https://www.visualstudio.com/vs/community) 2019 16.4.5 or greater
-- [.NET Core SDK 3.1](https://dotnet.microsoft.com/download/dotnet-core/3.1)
-- [Docker](https://www.docker.com/resources/what-container)  
+- [Visual Studio](https://www.visualstudio.com/vs/community) 2022 17.2.6 or greater
+- [.NET SDK 8.0](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [Docker](https://www.docker.com/resources/what-container)
 
 ## Tags & Technologies
-- [ASP.NET Core 3.1](https://docs.microsoft.com/en-us/aspnet/?view=aspnetcore-3.1#pivot=core)
+- [.NET 8](https://github.com/dotnet/core/blob/main/release-notes/8.0)
 - [Ocelot](https://github.com/ThreeMammals/Ocelot)  
 - [Eureka](https://spring.io/projects/spring-cloud-netflix)
-- [Docker](https://www.docker.com/resources/what-container)  
 
 ## Licence
 Licenced under [MIT](http://opensource.org/licenses/mit-license.php).

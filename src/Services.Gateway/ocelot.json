@@ -3,11 +3,17 @@
     {
       "ServiceName": "SERVICE.OPENAPI",
       "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 80
+        }
+      ],
       "UpstreamPathTemplate": "/{everything}",
       "UpstreamHttpMethod": [ "GET" ],
-      "FileCacheOptions": {
-        "TtlSeconds": 15
-      },
+      "UseServiceDiscovery": true,
+      "RouteIsCaseSensitive": false,
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
       }
