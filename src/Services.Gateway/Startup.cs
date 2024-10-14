@@ -19,8 +19,10 @@ public class Startup(IConfiguration configuration)
 
   public static void ConfigureServices(IServiceCollection services)
   {
-    services.AddOcelot()
-      .AddEureka() // https://ocelot.readthedocs.io/en/latest/features/servicediscovery.html#eureka
+    services
+      .AddRouting()
+      .AddOcelot()
+      .AddEureka() //https://ocelot.readthedocs.io/en/latest/features/servicediscovery.html#eureka
       .AddPolly()
       .AddCacheManager(x =>
       {

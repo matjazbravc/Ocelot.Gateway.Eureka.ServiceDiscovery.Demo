@@ -11,6 +11,9 @@ services:
             - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
         ports:
             - 9100:8080
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
         depends_on:
             - eureka-server
 
@@ -20,6 +23,9 @@ services:
             - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
         ports:
             - 9200:8080
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
         depends_on:
             - eureka-server
 
@@ -29,6 +35,9 @@ services:
             - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
         ports:
             - 9300:8080
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
         depends_on:
             - eureka-server
 
@@ -38,7 +47,11 @@ services:
             - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
         ports:
             - 9500:8080
+        volumes:
+            - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+            - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
         depends_on:
+            - eureka-server
             - servicea.openapi
             - serviceb.openapi
             - servicec.openapi

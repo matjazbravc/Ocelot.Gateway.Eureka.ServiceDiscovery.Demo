@@ -1,5 +1,6 @@
 {
   "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:9500",
     "ServiceDiscoveryProvider": {
       "Host": "localhost",
       "Port": 8761,
