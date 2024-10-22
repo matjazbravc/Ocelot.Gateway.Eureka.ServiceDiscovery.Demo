@@ -2,36 +2,32 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
+using Services.Gateway;
+using System.IO;
 
-namespace Services.Gateway;
-
-public static class Program
-{
-  public static async Task Main(string[] args)
+IHostBuilder hostBuilder = Host.CreateDefaultBuilder(args)
+  .UseContentRoot(Directory.GetCurrentDirectory())
+  .ConfigureWebHostDefaults(webBuilder =>
   {
-    await CreateHostBuilder(args).Build().RunAsync();
-  }
+    webBuilder.UseStartup<Startup>()
+    .ConfigureAppConfiguration((hostingContext, config) =>
+    {
+      config
+        .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
+        .AddJsonFile("appsettings.json", false, true)
+        .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true)
+        .AddJsonFile("ocelot.json", false, true)
+        .AddJsonFile($"ocelot.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true)
+        .AddEnvironmentVariables();
+    })
+    .ConfigureLogging((builderContext, logging) =>
+    {
+      logging.ClearProviders();
+      logging.AddConfiguration(builderContext.Configuration.GetSection("Logging"));
+      logging.AddConsole();
+      logging.AddDebug();
+    });
+  });
 
-  public static IHostBuilder CreateHostBuilder(string[] args) =>
-    Host.CreateDefaultBuilder(args)
-      .ConfigureWebHostDefaults(webBuilder =>
-      {
-        webBuilder.UseStartup<Startup>();
-      })
-      .ConfigureAppConfiguration((hostingContext, config) =>
-      {
-        config
-          .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
-          .AddEnvironmentVariables()
-          .AddJsonFile("ocelot.json", optional: false)
-          .AddJsonFile($"ocelot.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: false);
-      })
-      .ConfigureLogging((builderContext, logging) =>
-      {
-        logging.AddConfiguration(builderContext.Configuration.GetSection("Logging"));
-        logging.AddConsole();
-        logging.AddDebug();
-        logging.AddEventSourceLogger();
-      });
-}
+IHost host = hostBuilder.Build();
+await host.RunAsync();
