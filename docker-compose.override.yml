@@ -8,6 +8,7 @@ services:
     servicea.openapi:
         environment:
             - ASPNETCORE_ENVIRONMENT=Docker
+            - ASPNETCORE_URLS=http://+:9100
             - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
         ports:
             - 9100:8080
@@ -20,6 +21,7 @@ services:
     serviceb.openapi:
         environment:
             - ASPNETCORE_ENVIRONMENT=Docker
+            - ASPNETCORE_URLS=http://+:9200
             - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
         ports:
             - 9200:8080
@@ -32,6 +34,7 @@ services:
     servicec.openapi:
         environment:
             - ASPNETCORE_ENVIRONMENT=Docker
+            - ASPNETCORE_URLS=http://+:9300
             - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
         ports:
             - 9300:8080
