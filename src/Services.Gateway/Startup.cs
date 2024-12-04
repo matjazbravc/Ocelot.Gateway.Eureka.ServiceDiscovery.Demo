@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,7 +29,7 @@ public class Startup(IConfiguration configuration)
       });
   }
 
-  public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+  public static void Configure(IApplicationBuilder app)
   {
     app.UseRouting();
     app.UseEndpoints(endpoints =>
